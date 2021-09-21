@@ -29,7 +29,7 @@ function HomeScreen({ navigation }) {
         tx.executeSql(
           'select value from ip', [],
           (tx, result) => {
-            console.log(result.rows.item(0).value)
+            console.log(result.rows)
             if (result.rows.length == 1) {
               setIP(result.rows.item(0).value)
             }
@@ -38,14 +38,14 @@ function HomeScreen({ navigation }) {
       }
     )
     changeScreenOrientation()
-  })
+  }, [])
   async function changeScreenOrientation() {
     await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
   }
   return (
     <SafeAreaView style={styles.container} >
       <Text style={{ fontSize: 20, fontWeight: '500' }}>Enter IP: </Text>
-      <TextInput style={styles.input} value={IP} onChangeText={setIP} placeholder={'IP'} keyboardType={'numeric'} />
+      <TextInput style={styles.input} value={IP} onChangeText={setIP} placeholder={'IP'} />
       <Button title={'Go'} onPress={() => {
         navigation.navigate('WebView', { url: 'https://' + IP + ':8000/' })
         db.transaction(
